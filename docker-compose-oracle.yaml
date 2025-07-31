@@ -1,0 +1,18 @@
+# docker-compose.yml
+services:
+  fsl:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: fsl:dev
+    # keep the container ephemeral and interactive
+    stdin_open: true      # -i / --interactive
+    tty: true             # -t / --tty
+  # NOTE: to auto-remove on exit, run with `docker compose run --rm jemris`
+    environment:
+      DISPLAY: "${DISPLAY}"
+      XDG_RUNTIME_DIR: "${XDG_RUNTIME_DIR}"
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:ro
+      - ${XDG_RUNTIME_DIR}:${XDG_RUNTIME_DIR}
+      - ${HOME}/fsl-docker/fsl_workspace:/$HOME:rw
