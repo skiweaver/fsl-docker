@@ -15,4 +15,4 @@ services:
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:ro
       - ${XDG_RUNTIME_DIR}:${XDG_RUNTIME_DIR}
-      - ${HOME}/fsl-docker/fsl_workspace:/$HOME:rw
+      - ${HOME}/fsl-docker/fsl_workspace:/home/robertw/fsl_workspace:rw

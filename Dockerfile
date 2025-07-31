@@ -38,16 +38,17 @@ RUN --mount=type=cache,target=/var/cache/apt \
         && apt-get clean && rm -rf /var/lib/apt/lists/*
 
         
-RUN curl -Ls https://fsl.fmrib.ox.ac.uk/fsldownloads/fslconda/releases/getfsl.sh | sh -s
+RUN curl -Ls https://fsl.fmrib.ox.ac.uk/fsldownloads/fslconda/releases/getfsl.sh | sh -s -- /usr/local/fsl
+
+# Configure shell for fsl
+RUN echo '\
+FSLDIR=/usr/local/fsl\n\
+PATH=${FSLDIR}/share/fsl/bin:${PATH}\n\
+export FSLDIR PATH\n\
+. ${FSLDIR}/etc/fslconf/fsl.sh' >> /root/.bashrc
+
+WORKDIR /home/robertw/fsl_workspace
 
 ENTRYPOINT ["tini","--"]
 
 CMD ["bash"]
-
-# RUN wget https://git.fmrib.ox.ac.uk/fsl/installer/-/raw/3.3.0/fslinstaller.py
-# RUN python3 ./fslinstaller.py -d /usr/local/fsl/
-# ENV FSLDIR=/usr/local/fsl
-# ENTRYPOINT [ "sh", "-c", "./usr/local/fsl/etc/fslconf/fsl.sh && /bin/bash"]
-
-
-
